@@ -23,6 +23,31 @@ The far chunks still arrive, still sit in the cache, and map mods reading the wo
 
 That's the entire mod. One mixin.
 
+## Version support
+
+One jar covers **1.21 through 1.21.11**. No Stonecutter, no per-version builds.
+
+That works because Fabric's intermediary names are stable across versions, and the remapped jar
+references those, not Mojang names. `Options#getEffectiveRenderDistance()` is `class_315#method_38521`
+in every version from 1.20.1 to 1.21.11 — Mojang's package moves and renames don't touch it.
+
+The lower bound is 1.21 and it's the config screen's fault, not the mixin's. `OptionsSubScreen`
+was refactored between 1.20.x and 1.21:
+
+| | 1.20.5 | 1.21+ |
+|---|---|---|
+| class | concrete | `abstract` |
+| `OptionsList list` field | — | yes |
+| `addOptions()` | — | yes |
+| `addContents()` | — | yes |
+
+Verified rather than assumed: the project builds clean against both 1.21.1 and 1.21.11, and the
+compiled `ConfigScreen` and `OptionsMixin` reference an identical set of intermediary names in both
+builds. Checked `addOptions`/`list`/`addContents` present in 1.21, 1.21.1 and 1.21.11 mappings.
+
+Going below 1.21 means writing the config screen a second time, which is where Stonecutter would
+earn its keep. Not worth it until someone asks.
+
 ## Config
 
 With **Mod Menu** installed: Mods → Split Distance → the gear icon. Vanilla-style screen, a slider
@@ -88,10 +113,10 @@ Nothing at runtime beyond the game itself.
 
 | | Version | Scope | Why |
 |---|---|---|---|
-| Minecraft | `1.21.11` | required | |
-| Fabric Loader | `>=0.19.0` (built against `0.19.3`) | required | mixin host |
+| Minecraft | `>=1.21 <1.22` | required | one jar, see below |
+| Fabric Loader | `>=0.15.0` (built against `0.19.3`) | required | mixin host |
 | Java | `>=21` | required | |
-| Mod Menu | `17.0.0` | **optional** | config screen only; `modCompileOnly`, not in the jar's `depends` |
+| Mod Menu | any | **optional** | config screen only; `modCompileOnly`, not in the jar's `depends` |
 | Fabric API | `0.141.6+1.21.11` | **dev only** | Mod Menu needs it; `modLocalRuntime`, never shipped |
 
 Build-time only: Gradle `9.6.1` (wrapper), Fabric Loom `1.17.17`, Mojang official mappings.
