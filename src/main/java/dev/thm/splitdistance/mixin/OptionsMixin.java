@@ -1,8 +1,8 @@
-package dev.leon.splitdistance.mixin;
+package dev.thm.splitdistance.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.leon.splitdistance.Cap;
-import dev.leon.splitdistance.Config;
+import dev.thm.splitdistance.Cap;
+import dev.thm.splitdistance.Config;
 import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

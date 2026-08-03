@@ -1,8 +1,8 @@
-package dev.leon.splitdistance;
+package dev.thm.splitdistance;
 
 /**
  * The whole mod, as a pure function, plus its check.
- * No imports on purpose: run the check with `java src/main/java/dev/leon/splitdistance/Cap.java`.
+ * No imports on purpose: run the check with `java src/main/java/dev/thm/splitdistance/Cap.java`.
  */
 public final class Cap {
 

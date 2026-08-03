@@ -72,7 +72,7 @@ screen is built from vanilla `OptionInstance` widgets.
 The mod's only real logic is one pure function, and it runs standalone:
 
 ```sh
-java src/main/java/dev/leon/splitdistance/Cap.java   # prints "ok"
+java src/main/java/dev/thm/splitdistance/Cap.java   # prints "ok"
 ```
 
 ## Not done

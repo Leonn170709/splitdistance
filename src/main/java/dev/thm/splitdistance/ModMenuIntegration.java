@@ -1,4 +1,4 @@
-package dev.leon.splitdistance;
+package dev.thm.splitdistance;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

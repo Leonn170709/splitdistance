@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.leon.splitdistance.mixin",
+  "package": "dev.thm.splitdistance.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
     "OptionsMixin"

@@ -1,4 +1,4 @@
-package dev.leon.splitdistance;
+package dev.thm.splitdistance;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
