@@ -5,8 +5,13 @@
   "name": "Split Distance",
   "description": "Requests a large view distance from the server so map mods index it, but renders only a smaller radius.",
   "authors": ["Leonn170709"],
-  "contact": {},
-  "license": "MIT",
+  "contact": {
+    "homepage": "https://github.com/Leonn170709/splitdistance",
+    "sources": "https://github.com/Leonn170709/splitdistance",
+    "issues": "https://github.com/Leonn170709/splitdistance/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "icon": "assets/splitdistance/icon.png",
   "environment": "client",
   "entrypoints": {
     "modmenu": ["dev.thm.splitdistance.ModMenuIntegration"]

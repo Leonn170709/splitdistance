@@ -82,6 +82,23 @@ java src/main/java/dev/thm/splitdistance/Cap.java   # prints "ok"
 - Not tested against Sodium. Sodium replaces the section renderer but still reads
   `getEffectiveRenderDistance()`, so it should be fine. Should.
 
+## Dependencies
+
+Nothing at runtime beyond the game itself.
+
+| | Version | Scope | Why |
+|---|---|---|---|
+| Minecraft | `1.21.11` | required | |
+| Fabric Loader | `>=0.19.0` (built against `0.19.3`) | required | mixin host |
+| Java | `>=21` | required | |
+| Mod Menu | `17.0.0` | **optional** | config screen only; `modCompileOnly`, not in the jar's `depends` |
+| Fabric API | `0.141.6+1.21.11` | **dev only** | Mod Menu needs it; `modLocalRuntime`, never shipped |
+
+Build-time only: Gradle `9.6.1` (wrapper), Fabric Loom `1.17.17`, Mojang official mappings.
+
+No Fabric API, no Cloth Config, no config library, no Kotlin. The config screen is built from
+vanilla `OptionInstance` widgets and the config file is `java.util.Properties`.
+
 ## License
 
-MIT — see `LICENSE`.
+GPL-3.0-or-later — see `LICENSE`.
