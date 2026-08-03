@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "splitdistance",
+  "version": "${version}",
+  "name": "Split Distance",
+  "description": "Requests a large view distance from the server so map mods index it, but renders only a smaller radius.",
+  "authors": ["Leon"],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "mixins": [
+    {
+      "config": "splitdistance.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21"
+  }
+}
