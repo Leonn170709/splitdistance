@@ -1,0 +1,10 @@
+{
+  "splitdistance.config.title": "Split Distance",
+
+  "splitdistance.option.renderChunks": "Render Distance Cap",
+  "splitdistance.option.renderChunks.off": "Off",
+  "splitdistance.option.renderChunks.tooltip": "How many chunks actually get drawn. Leave your normal render distance high (32) so the server keeps sending far chunks for map mods to index. Off disables the mod.",
+
+  "splitdistance.option.threadGuard": "Map Mod Thread Guard",
+  "splitdistance.option.threadGuard.tooltip": "Report the full, uncapped distance to callers outside the render thread, so map mods that check render distance still scan the whole radius. Turn off if a map mod misbehaves."
+}

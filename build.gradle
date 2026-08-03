@@ -11,6 +11,10 @@ base {
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'Terraformers'
+        url = 'https://maven.terraformersmc.com/releases/'
+    }
 }
 
 dependencies {
@@ -19,7 +23,10 @@ dependencies {
     // are named the same as everything else in this file, and there's no yarn build to track.
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    // No Fabric API dependency. This mod is one mixin and a properties file.
+
+    // Compile-only: we implement ModMenuApi, but the mod runs fine without Mod Menu installed.
+    // transitive = false keeps Mod Menu's own Fabric API requirement out of our build.
+    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { transitive = false }
 }
 
 processResources {

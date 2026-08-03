@@ -25,7 +25,11 @@ That's the entire mod. One mixin.
 
 ## Config
 
-`config/splitdistance.properties`, written on first launch. Restart to apply.
+With **Mod Menu** installed: Mods → Split Distance → the gear icon. Vanilla-style screen, a slider
+and a toggle. Changes apply the moment you hit Done — no restart, the chunk sections rebuild the same
+way they do when you drag the vanilla render distance slider.
+
+Without Mod Menu: edit `config/splitdistance.properties`, written on first launch, and restart.
 
 ```properties
 renderChunks=12
@@ -58,7 +62,9 @@ threadGuard=true
 ./gradlew build      # jar lands in build/libs/
 ```
 
-Uses Mojang mappings and Fabric Loader only — no Fabric API dependency.
+Uses Mojang mappings and Fabric Loader. Mod Menu 17.0.0 is a compile-only dependency for the config
+screen entrypoint; the mod runs fine without it. No Fabric API dependency, no Cloth Config — the
+screen is built from vanilla `OptionInstance` widgets.
 
 ## Check
 
@@ -70,7 +76,6 @@ java src/main/java/dev/leon/splitdistance/Cap.java   # prints "ok"
 
 ## Not done
 
-- No config GUI. Edit the file, restart.
 - No light-data stripping for far chunks. It would save a few hundred MB of nibble arrays but breaks
   the night layer on both map mods. Add it if the heap actually hurts.
 - Not tested against Sodium. Sodium replaces the section renderer but still reads

@@ -10,10 +10,12 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 /**
- * ponytail: java.util.Properties and a flat file. No config library, no GUI screen,
- * no hot reload. Edit the file, restart the game. Add a screen when you get tired of that.
+ * ponytail: java.util.Properties and a flat file. No config library -- the screen is built
+ * from vanilla OptionInstance widgets, so there is nothing for Cloth Config to do here.
  */
 public final class Config {
+
+    public static final int MAX_RENDER_CHUNKS = 32;
 
     private static final int DEFAULT_RENDER_CHUNKS = 12;
     private static final boolean DEFAULT_THREAD_GUARD = true;
@@ -34,31 +36,50 @@ public final class Config {
         return threadGuard;
     }
 
+    /**
+     * Applies and persists in one go. Called when the config screen closes.
+     *
+     * @return true if anything actually changed, so the caller knows whether to rebuild chunks
+     */
+    public static synchronized boolean set(int newRenderChunks, boolean newThreadGuard) {
+        ensureLoaded();
+        if (newRenderChunks == renderChunks && newThreadGuard == threadGuard) return false;
+        renderChunks = newRenderChunks;
+        threadGuard = newThreadGuard;
+        save();
+        return true;
+    }
+
+    private static Path file() {
+        return FabricLoader.getInstance().getConfigDir().resolve("splitdistance.properties");
+    }
+
     private static synchronized void ensureLoaded() {
         if (loaded) return;
         loaded = true;
 
-        Path file = FabricLoader.getInstance().getConfigDir().resolve("splitdistance.properties");
-        Properties props = new Properties();
-
-        if (Files.exists(file)) {
-            try (InputStream in = Files.newInputStream(file)) {
-                props.load(in);
-            } catch (IOException e) {
-                System.err.println("[splitdistance] could not read config, using defaults: " + e);
-                return;
-            }
-            renderChunks = parseInt(props.getProperty("renderChunks"), DEFAULT_RENDER_CHUNKS);
-            threadGuard = parseBool(props.getProperty("threadGuard"), DEFAULT_THREAD_GUARD);
-        } else {
-            write(file);
+        Path file = file();
+        if (!Files.exists(file)) {
+            save();
+            return;
         }
+
+        Properties props = new Properties();
+        try (InputStream in = Files.newInputStream(file)) {
+            props.load(in);
+        } catch (IOException e) {
+            System.err.println("[splitdistance] could not read config, using defaults: " + e);
+            return;
+        }
+        renderChunks = parseInt(props.getProperty("renderChunks"), DEFAULT_RENDER_CHUNKS);
+        threadGuard = parseBool(props.getProperty("threadGuard"), DEFAULT_THREAD_GUARD);
     }
 
-    private static void write(Path file) {
+    private static void save() {
         Properties props = new Properties();
-        props.setProperty("renderChunks", String.valueOf(DEFAULT_RENDER_CHUNKS));
-        props.setProperty("threadGuard", String.valueOf(DEFAULT_THREAD_GUARD));
+        props.setProperty("renderChunks", String.valueOf(renderChunks));
+        props.setProperty("threadGuard", String.valueOf(threadGuard));
+        Path file = file();
         try {
             Files.createDirectories(file.getParent());
             try (OutputStream out = Files.newOutputStream(file)) {
@@ -72,7 +93,7 @@ public final class Config {
                                        mod misbehaves.""");
             }
         } catch (IOException e) {
-            System.err.println("[splitdistance] could not write default config: " + e);
+            System.err.println("[splitdistance] could not write config: " + e);
         }
     }
 
