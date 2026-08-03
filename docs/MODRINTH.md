@@ -79,6 +79,18 @@ Without Mod Menu: edit `config/splitdistance.properties` and restart.
   mods that check render distance still scan the whole radius. Default on. Turn it off if a map mod
   misbehaves.
 
+## Compatibility
+
+Works with **Sodium**, **Iris** and **Nvidium** — they read the same render distance value, so they
+build only the capped radius. No interaction at all with ImmediatelyFast, EntityCulling, MoreCulling
+or Noxesium.
+
+**Distant Horizons** works, and starts its LODs where the rendered chunks stop. If you see a gap
+between the rendered area and the LODs, set `threadGuard` to false.
+
+**Bobby is not compatible.** It modifies the same render distance value in the opposite direction, to
+draw chunks the server is no longer sending. Use one or the other.
+
 ## Versions
 
 One jar covers Minecraft 1.21 through 1.21.11, Fabric.

@@ -55,6 +55,41 @@ in both builds.
 Going below 1.21 means writing the config screen a second time, which is where Stonecutter would
 earn its keep. Not worth it until someone asks.
 
+## Compatibility with performance mods
+
+Everything hinges on one question: does the other mod read
+`Options#getEffectiveRenderDistance()`? If it does, it sees the capped value and cooperates for free.
+Scanned the actual 1.21.11 jars for reads of `class_315#method_38521`:
+
+| Mod | Reads it | Verdict |
+|---|---|---|
+| **Sodium** | yes — `SodiumWorldRenderer`, `LevelRendererMixin` | works, honours the cap |
+| **Iris** | yes — 5 classes incl. `ShadowRenderer` | works; shadow distance follows the cap too |
+| **Nvidium** | yes — `RenderPipeline`, its Sodium mixin | works |
+| **ImmediatelyFast** | no | no interaction |
+| **EntityCulling** | no | no interaction |
+| **MoreCulling** | no | no interaction |
+| **Noxesium** | no | no interaction |
+| **Distant Horizons** | yes — `MinecraftRenderWrapper` | works, with a caveat below |
+| **Bobby** | yes, and injects the same method | **conflicts, don't run both** |
+
+**Sodium** is the important one and it's clean: `SodiumWorldRenderer` reads the same method, so Sodium
+builds sections out to the cap and no further. Sodium also mixins `LevelRenderer` and calls
+`allChanged()`, which is what the config screen uses to apply changes live, so that keeps working.
+Sodium replacing the vanilla video settings screen doesn't matter — this mod's screen is a separate
+Mod Menu entry.
+
+**Distant Horizons** uses render distance to decide where vanilla chunks stop and LODs begin. With
+the cap it starts LODs at 12, which is arguably exactly what you want. But if DH queries render
+distance off the render thread, `threadGuard` hands it the *uncapped* 32 and you get a ring between
+12 and 32 with neither chunks nor LODs. If you see that, set `threadGuard=false`.
+
+**Bobby** is a real conflict, not a theoretical one. Its
+`GameOptionsMixin#forceClientDistanceWhenBobbyIsActive` is an `@Inject` with `setReturnValue` on
+`method_38521` — the same method, the same injection style this mod uses. Both run, and which one
+wins depends on mixin priority. They also want opposite things: Bobby raises the effective distance
+so it can draw its cached chunks, this mod lowers it so fewer get drawn. Pick one.
+
 ## Config
 
 With **Mod Menu** installed: Mods → Split Distance → the gear icon. Vanilla-style screen, a slider
@@ -111,8 +146,7 @@ java src/main/java/dev/thm/splitdistance/Cap.java   # prints "ok"
 
 - No light-data stripping for far chunks. It would save a few hundred MB of nibble arrays but breaks
   the night layer on both map mods. Add it if the heap actually hurts.
-- Not tested against Sodium. Sodium replaces the section renderer but still reads
-  `getEffectiveRenderDistance()`, so it should be fine. Should.
+- No per-dimension config. One global cap.
 
 ## Dependencies
 
