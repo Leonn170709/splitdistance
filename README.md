@@ -25,7 +25,12 @@ That's the entire mod. One mixin.
 
 ## Version support
 
-One jar covers **1.21 through 1.21.11**. No Stonecutter, no per-version builds.
+One jar, twelve versions. No Stonecutter, no per-version builds.
+
+```
+1.21    1.21.1   1.21.2   1.21.3   1.21.4   1.21.5
+1.21.6  1.21.7   1.21.8   1.21.9   1.21.10  1.21.11
+```
 
 That works because Fabric's intermediary names are stable across versions, and the remapped jar
 references those, not Mojang names. `Options#getEffectiveRenderDistance()` is `class_315#method_38521`
@@ -41,9 +46,11 @@ was refactored between 1.20.x and 1.21:
 | `addOptions()` | — | yes |
 | `addContents()` | — | yes |
 
-Verified rather than assumed: the project builds clean against both 1.21.1 and 1.21.11, and the
-compiled `ConfigScreen` and `OptionsMixin` reference an identical set of intermediary names in both
-builds. Checked `addOptions`/`list`/`addContents` present in 1.21, 1.21.1 and 1.21.11 mappings.
+Verified rather than assumed, for **all twelve** versions: `class_315#method_38521` present in each
+one's intermediary mappings, and `addOptions()` / `OptionsList list` / `addContents()` present in
+each one's Mojang mappings. On top of that the project builds clean against both 1.21.1 and 1.21.11,
+and the compiled `ConfigScreen` and `OptionsMixin` reference an identical set of intermediary names
+in both builds.
 
 Going below 1.21 means writing the config screen a second time, which is where Stonecutter would
 earn its keep. Not worth it until someone asks.
