@@ -60,6 +60,7 @@ threadGuard=true
 
 ```sh
 ./gradlew build      # jar lands in build/libs/
+./gradlew runClient  # dev client, with Mod Menu installed so you can reach the config screen
 ```
 
 Uses Mojang mappings and Fabric Loader. Mod Menu 17.0.0 is a compile-only dependency for the config

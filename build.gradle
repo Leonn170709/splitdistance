@@ -27,6 +27,12 @@ dependencies {
     // Compile-only: we implement ModMenuApi, but the mod runs fine without Mod Menu installed.
     // transitive = false keeps Mod Menu's own Fabric API requirement out of our build.
     modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { transitive = false }
+
+    // Dev client only -- so `runClient` actually has Mod Menu to show the config screen in.
+    // localRuntime never ends up in the published jar. Fabric API is here because Mod Menu
+    // needs it, not because this mod does.
+    modLocalRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modLocalRuntime "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
 processResources {
