@@ -29,5 +29,8 @@
   },
   "suggests": {
     "modmenu": "*"
+  },
+  "breaks": {
+    "bobby": "*"
   }
 }
